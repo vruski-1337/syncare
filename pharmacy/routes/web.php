@@ -1,17 +1,29 @@
-// PDF download route for invoices
-Route::get('invoices/{invoice}/pdf', [App\Http\Controllers\InvoiceController::class, 'pdf'])->middleware(['auth'])->name('invoices.pdf');
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (! auth()->check()) {
+        return view('welcome');
+    }
+
+    return redirect()->route('dashboard');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    $user = request()->user();
+
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+
+    return redirect()->route('company.dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -24,18 +36,19 @@ require __DIR__.'/auth.php';
 
 // admin panel routes
 Route::middleware(['auth','role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [App\Http\Controllers\AdminController::class,'dashboard'])->name('dashboard');
-    Route::resource('companies', App\Http\Controllers\CompanyController::class);
+    Route::get('/', [AdminController::class,'dashboard'])->name('dashboard');
+    Route::resource('companies', CompanyController::class);
     Route::resource('subscriptions', App\Http\Controllers\SubscriptionController::class);
-    Route::post('reset-credentials', [App\Http\Controllers\AdminController::class,'resetCredentials'])->name('reset-credentials');
-    Route::get('settings', [App\Http\Controllers\AdminController::class,'settings'])->name('settings');
-    Route::post('settings', [App\Http\Controllers\AdminController::class,'saveSettings']);
+    Route::post('reset-credentials', [AdminController::class,'resetCredentials'])->name('reset-credentials');
+    Route::get('settings', [AdminController::class,'settings'])->name('settings');
+    Route::post('settings', [AdminController::class,'saveSettings']);
     // additional admin-specific actions can be added here
 });
 
 // company routes for authenticated users
 Route::middleware(['auth'])->group(function () {
-    Route::get('/company/dashboard', [App\Http\Controllers\CompanyController::class,'dashboard'])->name('company.dashboard');
-    Route::resource('products', App\Http\Controllers\ProductController::class);
-    Route::resource('invoices', App\Http\Controllers\InvoiceController::class);
+    Route::get('/company/dashboard', [CompanyController::class,'dashboard'])->name('company.dashboard');
+    Route::resource('products', ProductController::class);
+    Route::resource('invoices', InvoiceController::class);
+    Route::get('invoices/{invoice}/pdf', [InvoiceController::class, 'pdf'])->name('invoices.pdf');
 });

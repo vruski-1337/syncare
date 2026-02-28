@@ -1,13 +1,8 @@
-    public function pdf($id)
-    {
-        $invoice = $this->company()->invoices()->findOrFail($id);
-        $pdf = \PDF::loadView('invoices.pdf', compact('invoice'));
-        return $pdf->download('invoice_'.$invoice->id.'.pdf');
-    }
 <?php
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -25,7 +20,6 @@ class InvoiceController extends Controller
 
     public function create()
     {
-        // invoice line items handled separately later
         return view('invoices.create');
     }
 
@@ -39,8 +33,10 @@ class InvoiceController extends Controller
         $data['company_id'] = $this->company()->id;
         $data['user_id'] = auth()->id();
         $data['number'] = 'INV-' . time();
-        \App\Models\Invoice::create($data);
-        return redirect()->route('invoices.index')->with('success','Invoice created');
+
+        Invoice::create($data);
+
+        return redirect()->route('invoices.index')->with('success', 'Invoice created');
     }
 
     public function show(string $id)
@@ -58,18 +54,30 @@ class InvoiceController extends Controller
     public function update(Request $request, string $id)
     {
         $invoice = $this->company()->invoices()->findOrFail($id);
+
         $data = $request->validate([
             'total' => 'required|numeric',
             'status' => 'required|in:draft,issued,paid,cancelled',
         ]);
+
         $invoice->update($data);
-        return redirect()->route('invoices.index')->with('success','Invoice updated');
+
+        return redirect()->route('invoices.index')->with('success', 'Invoice updated');
     }
 
     public function destroy(string $id)
     {
         $invoice = $this->company()->invoices()->findOrFail($id);
         $invoice->delete();
-        return redirect()->route('invoices.index')->with('success','Deleted');
+
+        return redirect()->route('invoices.index')->with('success', 'Deleted');
+    }
+
+    public function pdf(string $id)
+    {
+        $invoice = $this->company()->invoices()->findOrFail($id);
+        $pdf = \PDF::loadView('invoices.pdf', compact('invoice'));
+
+        return $pdf->download('invoice_'.$invoice->id.'.pdf');
     }
 }

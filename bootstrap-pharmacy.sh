@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_DIR="/workspaces/syncare/pharmacy"
+APP_DIR="/home/vruski/syncare/pharmacy"
 APP_NAME="syncare_pharmacy"
 DB_MODE="sqlite"
 PHP_VERSION="8.3"
@@ -12,7 +12,7 @@ usage() {
 Usage: $0 [--app-dir PATH] [--db sqlite|mysql] [--port 8000]
 
 Options:
-  --app-dir PATH   Laravel app path (default: /workspaces/syncare/pharmacy)
+  --app-dir PATH   Laravel app path (default: /home/vruski/syncare/pharmacy)
   --db MODE        Database mode: sqlite (default) or mysql
   --port PORT      Laravel serve port (default: 8000)
 EOF
