@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('header')<h2>New Product</h2>@endsection
+@section('content')
 <div class="py-6"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 <form method="POST" action="{{ route('products.store') }}">
     @csrf
@@ -12,3 +13,4 @@
     <div><button class="bg-blue-500 text-white px-4 py-2">Save</button></div>
 </form>
 </div></div>
+@endsection

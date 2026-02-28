@@ -95,9 +95,9 @@ class CompanyController extends Controller
     {
         $company = auth()->user()->company;
         if (! $company) {
-            abort(404);
+            return redirect()->route('dashboard')->with('error', 'No company is linked to your account yet.');
         }
-        // placeholder stats
+
         $stats = [
             'products' => $company->products()->count(),
             'invoices' => $company->invoices()->count(),

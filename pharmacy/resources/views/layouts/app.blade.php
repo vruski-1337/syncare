@@ -19,17 +19,25 @@
             @include('layouts.navigation')
 
             <!-- Page Heading -->
-            @isset($header)
+            @if (isset($header) || trim($__env->yieldContent('header')))
                 <header class="bg-white dark:bg-gray-800 shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+                        @isset($header)
+                            {{ $header }}
+                        @else
+                            @yield('header')
+                        @endisset
                     </div>
                 </header>
-            @endisset
+            @endif
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                @isset($slot)
+                    {{ $slot }}
+                @else
+                    @yield('content')
+                @endisset
             </main>
             <footer class="text-center py-4 bg-gray-200 dark:bg-gray-800">
                 @php

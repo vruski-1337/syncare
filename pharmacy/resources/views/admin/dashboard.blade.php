@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('header')<h2>Administrator Dashboard</h2>@endsection
+@section('content')
 <div class="py-6"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 <p>Companies: {{ $companyCount }}</p>
 <p>Subscriptions: {{ $subscriptionCount }}</p>
@@ -15,3 +16,4 @@
 </form>
 
 </div></div>
+@endsection

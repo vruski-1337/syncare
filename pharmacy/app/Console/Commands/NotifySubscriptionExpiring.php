@@ -18,25 +18,15 @@ class NotifySubscriptionExpiring extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Alias: send reminders for expiring subscriptions';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $soon = now()->addDays(7);
-        $subs = \App\Models\Subscription::with('company')
-            ->where('end_date','<=',$soon)
-            ->where('active',true)
-            ->whereNull('reminder_sent_at')
-            ->get();
+        $this->warn('Deprecated command signature. Running app:send-subscription-alerts instead.');
 
-        foreach ($subs as $s) {
-            // TODO: send actual email using configured mailer
-            \Log::info("Subscription for company {$s->company->name} expiring on {$s->end_date}");
-            $s->reminder_sent_at = now();
-            $s->save();
-        }
+        return $this->call('app:send-subscription-alerts');
     }
 }

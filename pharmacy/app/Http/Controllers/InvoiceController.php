@@ -9,7 +9,13 @@ class InvoiceController extends Controller
 {
     protected function company()
     {
-        return auth()->user()->company;
+        $company = auth()->user()->company;
+
+        if (! $company) {
+            abort(403, 'No company is linked to your account.');
+        }
+
+        return $company;
     }
 
     public function index()

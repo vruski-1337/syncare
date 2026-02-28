@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Subscription;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -16,10 +17,11 @@ class SubscriptionExpiring extends Mailable
     /**
      * Create a new message instance.
      */
-    public $company;
-    public function __construct($company)
+    public Subscription $subscription;
+
+    public function __construct(Subscription $subscription)
     {
-        $this->company = $company;
+        $this->subscription = $subscription;
     }
 
     /**
@@ -39,7 +41,7 @@ class SubscriptionExpiring extends Mailable
     {
         return new Content(
             view: 'emails.subscription_expiring',
-            with: ['company' => $this->company],
+            with: ['subscription' => $this->subscription],
         );
     }
 

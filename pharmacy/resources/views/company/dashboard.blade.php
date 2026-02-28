@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('header')<h2>Company Dashboard</h2>@endsection
+@section('content')
 <div class="py-6"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 <p>Welcome, {{ auth()->user()->name }} ({{ auth()->user()->role }})</p>
 <p>Company: {{ $company->name }}</p>
@@ -8,3 +9,4 @@
     <li>Invoices: {{ $stats['invoices'] }}</li>
 </ul>
 </div></div>
+@endsection

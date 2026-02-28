@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('header')<h2>New Subscription</h2>@endsection
+@section('content')
 <div class="py-6">
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 <form method="POST" action="{{ route('admin.subscriptions.store') }}">
@@ -23,3 +24,4 @@
 </form>
 </div>
 </div>
+@endsection
