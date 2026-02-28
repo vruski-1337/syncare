@@ -22,6 +22,10 @@ Route::get('/dashboard', function () {
         return redirect()->route('admin.dashboard');
     }
 
+    if (! $user->company_id) {
+        return view('dashboard');
+    }
+
     return redirect()->route('company.dashboard');
 })->middleware(['auth'])->name('dashboard');
 
