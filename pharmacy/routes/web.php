@@ -1,3 +1,5 @@
+// PDF download route for invoices
+Route::get('invoices/{invoice}/pdf', [App\Http\Controllers\InvoiceController::class, 'pdf'])->middleware(['auth'])->name('invoices.pdf');
 <?php
 
 use App\Http\Controllers\ProfileController;

@@ -10,5 +10,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::apiResource('products', App\Http\Controllers\ProductController::class);
     Route::apiResource('invoices', App\Http\Controllers\InvoiceController::class);
-    // subscriptions managed by admin only via web, can expose read-only if needed
+    // HMS endpoints for future integration
+    Route::get('/hms/company/{id}', [App\Http\Controllers\CompanyController::class, 'show']);
+    // Add more HMS endpoints as needed
 });

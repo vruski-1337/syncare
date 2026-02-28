@@ -1,3 +1,9 @@
+    public function pdf($id)
+    {
+        $invoice = $this->company()->invoices()->findOrFail($id);
+        $pdf = \PDF::loadView('invoices.pdf', compact('invoice'));
+        return $pdf->download('invoice_'.$invoice->id.'.pdf');
+    }
 <?php
 
 namespace App\Http\Controllers;
