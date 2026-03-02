@@ -15,6 +15,25 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @if (Auth::user()->role === 'admin')
+                        <x-nav-link :href="route('admin.companies.index')" :active="request()->routeIs('admin.companies.*')">
+                            {{ __('Companies') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.subscriptions.index')" :active="request()->routeIs('admin.subscriptions.*')">
+                            {{ __('Subscriptions') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.settings')" :active="request()->routeIs('admin.settings')">
+                            {{ __('Settings') }}
+                        </x-nav-link>
+                    @else
+                        <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                            {{ __('Products') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('invoices.index')" :active="request()->routeIs('invoices.*')">
+                            {{ __('Invoices') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -70,6 +89,25 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @if (Auth::user()->role === 'admin')
+                <x-responsive-nav-link :href="route('admin.companies.index')" :active="request()->routeIs('admin.companies.*')">
+                    {{ __('Companies') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.subscriptions.index')" :active="request()->routeIs('admin.subscriptions.*')">
+                    {{ __('Subscriptions') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.settings')" :active="request()->routeIs('admin.settings')">
+                    {{ __('Settings') }}
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                    {{ __('Products') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('invoices.index')" :active="request()->routeIs('invoices.*')">
+                    {{ __('Invoices') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

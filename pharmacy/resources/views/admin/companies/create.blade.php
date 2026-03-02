@@ -29,6 +29,22 @@
                         <label>Footer Text</label>
                         <input type="text" name="footer_text" value="{{ old('footer_text') }}" />
                     </div>
+                    <div class="mt-4">
+                        <label>Owner Name</label>
+                        <input type="text" name="owner_name" value="{{ old('owner_name') }}" required />
+                    </div>
+                    <div>
+                        <label>Owner Email (Login)</label>
+                        <input type="email" name="owner_email" value="{{ old('owner_email') }}" required />
+                    </div>
+                    <div>
+                        <label>Owner Password</label>
+                        <input type="password" name="owner_password" required />
+                    </div>
+                    <div>
+                        <label>Confirm Owner Password</label>
+                        <input type="password" name="owner_password_confirmation" required />
+                    </div>
                     <div>
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2">Save</button>
                     </div>

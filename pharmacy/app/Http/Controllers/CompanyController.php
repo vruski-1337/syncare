@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
@@ -35,9 +38,30 @@ class CompanyController extends Controller
             'address' => 'nullable|string',
             'footer_text' => 'nullable|string|max:255',
             'active' => 'boolean',
+            'owner_name' => 'required|string|max:255',
+            'owner_email' => 'required|email|max:255|unique:users,email',
+            'owner_password' => 'required|string|min:8|confirmed',
         ]);
 
-        \App\Models\Company::create($data);
+        DB::transaction(function () use ($data) {
+            $company = \App\Models\Company::create([
+                'name' => $data['name'],
+                'email' => $data['email'] ?? null,
+                'domain' => $data['domain'] ?? null,
+                'address' => $data['address'] ?? null,
+                'footer_text' => $data['footer_text'] ?? null,
+                'active' => $data['active'] ?? true,
+            ]);
+
+            User::create([
+                'name' => $data['owner_name'],
+                'email' => $data['owner_email'],
+                'password' => Hash::make($data['owner_password']),
+                'role' => 'owner',
+                'company_id' => $company->id,
+            ]);
+        });
+
         return redirect()->route('admin.companies.index')->with('success', 'Company created');
     }
 

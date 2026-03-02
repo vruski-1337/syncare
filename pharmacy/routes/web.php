@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (! auth()->check()) {
-        return view('welcome');
+        return redirect()->route('login');
     }
 
     return redirect()->route('dashboard');
@@ -23,7 +23,15 @@ Route::get('/dashboard', function () {
     }
 
     if (! $user->company_id) {
-        return view('dashboard');
+        $company = \App\Models\Company::create([
+            'name' => $user->name."'s Company",
+            'email' => $user->email,
+            'active' => true,
+        ]);
+
+        $user->update([
+            'company_id' => $company->id,
+        ]);
     }
 
     return redirect()->route('company.dashboard');
