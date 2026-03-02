@@ -16,13 +16,26 @@ function envv(string $key, ?string $default = null): ?string
                 [$k, $v] = explode('=', $line, 2);
                 $k = trim($k);
                 $v = trim($v);
+                if ($v !== '') {
+                    $first = $v[0];
+                    $last = $v[strlen($v) - 1];
+                    if (($first === '"' && $last === '"') || ($first === "'" && $last === "'")) {
+                        $v = substr($v, 1, -1);
+                    }
+                }
                 $_ENV[$k] = $v;
             }
         }
         $loaded = true;
     }
 
-    return $_ENV[$key] ?? $default;
+    $envValue = $_ENV[$key] ?? getenv($key);
+
+    if ($envValue === false || $envValue === null || $envValue === '') {
+        return $default;
+    }
+
+    return (string) $envValue;
 }
 
 function e(string $value): string

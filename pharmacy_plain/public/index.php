@@ -19,5 +19,14 @@ spl_autoload_register(function (string $class): void {
     }
 });
 
-App\Services\BootstrapService::ensureMainAdmin();
-App\Core\App::run();
+try {
+    App\Services\BootstrapService::ensureMainAdmin();
+    App\Core\App::run();
+} catch (\Throwable $e) {
+    http_response_code(503);
+    echo '<h1>Database connection error</h1>';
+    echo '<p>' . e($e->getMessage()) . '</p>';
+    if (envv('APP_DEBUG', 'false') === 'true') {
+        echo '<pre>' . e($e->getTraceAsString()) . '</pre>';
+    }
+}
